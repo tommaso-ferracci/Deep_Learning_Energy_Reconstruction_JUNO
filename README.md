@@ -6,9 +6,9 @@ JUNO is a neutrino observatory. It detects neutrinos via the so called Inverse B
 ## Table of contents
 1. [Feature Engineering](#feature_engineering)
 2. [Feature Selection](#feature_selection)
-3. [Boosted Decision Trees](#bdt)
-4. [Fully Connected Deep Neural Network](#fcdnn)
-5. [1-Dimensional Neural Network](#1dcnn)
+3. [BDT](#bdt)
+4. [FCDNN](#fcdnn)
+5. [1DCNN](#1dcnn)
 6. [Results](#results)
 
 ## Feature Engineering <a name="feature_engineering"></a>
