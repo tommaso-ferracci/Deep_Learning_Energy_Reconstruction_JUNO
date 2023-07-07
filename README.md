@@ -4,9 +4,9 @@ JUNO is a neutrino observatory. It detects neutrinos via the so called Inverse B
 ## Table of contents
 1. [Feature Engineering](#feature_engineering)
 2. [Feature Selection](#feature_selection)
-3. [Boosted Decision Trees](#BDT)
-4. [Fully Connected Deep Neural Network](#FCDNN)
-5. [1-Dimensional Neural Network](#1DCNN)
+3. [Boosted Decision Trees](#bdt)
+4. [Fully Connected Deep Neural Network](#fcdnn)
+5. [1-Dimensional Neural Network](#1dcnn)
 6. [Results](#results)
 
 ## Feature Engineering <a name="feature_engineering"></a>
@@ -16,7 +16,7 @@ JUNO is a neutrino observatory. It detects neutrinos via the so called Inverse B
 
 In `feature_pipeline.ipynb` the raw data from PMTs is processed and fed to `helper_functions/feature_engineering.py`. 162 features are engineered: $\texttt{AccumCharge}$, $\texttt{nPMTs}$, features characterizing the positions of the center of charge and of the center of first-hit-time, in addition to features characterizing the distributions of charge and of first-hit-time. As many of these are highly correlated, further simplification is possible via feature selection. 
 
-## Feature Selection <a name="ifeature_selection"></a>
+## Feature Selection <a name="feature_selection"></a>
 The algorithm is based around BDTs and works as follows:
 - BDT is trained with 162 features, MAPE (\%) is used as measure of performance with its error given by 5-fold cross-validation;
 - The features capable of the best performance on its own is found (unsurprisingly it is $\texttt{AccumCharge}$, linearly correlated with the energy);
@@ -28,7 +28,7 @@ In total 13 features are selected.
   <img src="images/BDT_feature_selection.png" width="100%"/>
 </p>
 
-## Boosted Decision Trees <a name="BDT"></a>
+## Boosted Decision Trees <a name="bdt"></a>
 Now Bayesian optimization of the BDT hyperparameters is performed using Optuna. `helper_functions/parallel_coordinates_plot.py` contains a useful function to visualize the process.
 
 <p align="middle">
@@ -38,17 +38,17 @@ Now Bayesian optimization of the BDT hyperparameters is performed using Optuna. 
 In addition, SHAP (SHapley Additive exPlanations) values are computed to assess the contribution of each feature to the model's predictions. $\texttt{AccumCharge}$ is discared for visualization purposes as its contribution is much larger. 
 
 <p align="middle">
-  <img src="images/BDT_shap.png" width="100%"/>
+  <img src="images/BDT_shap.png" width="85%"/>
 </p>
 
-## Fully Connected Deep Neural Network <a name="FCDNN"></a>
+## Fully Connected Deep Neural Network <a name="fcdnn"></a>
 In this case Bayesian optimization is performed on hyperparameters related both to the model's architecture and to the training process. In addition Optuna's Median Pruner is used to discard unpromising trials, speeding up the process.
 
 <p align="middle">
   <img src="images/FCDNN_hyperparameter_tuning.png" width="100%"/>
 </p>
 
-## 1-Dimesional Convolutional Neural Network <a name="1DCNN"></a>
+## 1-Dimesional Convolutional Neural Network <a name="1dcnn"></a>
 CNNs should not perform well on tabular data as there are no local characteristics they can capture (the ordering of columns is arbitrary). However, by adding a fully connected layer immediately after input, the model is capable of learning on its own a useful spacial representation of the features on which the convolutional layers can then work on. \
 To prevent overfitting and instability due to the complex architecture several regularization techniques have been implemented: dropout layers, batch normalization, weight normalization, a shortcut in the architecture skipping two concolutional layers, ... \
 Bayesian optimization of the hyperparameters (with pruning) is performed. 
@@ -61,7 +61,7 @@ Bayesian optimization of the hyperparameters (with pruning) is performed.
 The testing dataset is given by 14 subsets of simulated events at 14 different energies. For each subset a Gaussian fit of the difference between true and predicted values is performed. From the mean $\mu$ and the standard deviation $\sigma$ returned by the fit, bias and resolution can be computed. 
 
 <p align="middle">
-  <img src="images/results.png" width="100%"/>
+  <img src="images/results.png" width="80%"/>
 </p>
 
 Bias is sistematically different from 0 at lower energies. This is due to the models learning to expect data in a fixed energy range. Too close to the boundaries the residuals deviate from Guassianity. Bias is compatible with 0 at higher energies for both BDT and FCDNN, while 1DCNN's predictions remain biased. This is possibly due to overfitting of the training dataset, caused by excessive instability in the validation loss. \
