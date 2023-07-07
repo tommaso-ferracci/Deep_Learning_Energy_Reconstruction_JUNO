@@ -27,27 +27,27 @@ The algorithm is based around BDTs and works as follows:
 In total 13 features are selected.
 
 <p align="middle">
-  <img src="images/BDT_feature_selection.png" width="100%"/>
+  <img src="images/BDT_feature_selection.png" width="90%"/>
 </p>
 
 ## Boosted Decision Trees <a name="bdt"></a>
 Now Bayesian optimization of the BDT hyperparameters is performed using Optuna. `helper_functions/parallel_coordinates_plot.py` contains a useful function to visualize the process.
 
 <p align="middle">
-  <img src="images/BDT_hyperparameter_tuning.png" width="95%"/>
+  <img src="images/BDT_hyperparameter_tuning.png" width="85%"/>
 </p>
 
 In addition, SHAP (SHapley Additive exPlanations) values are computed to assess the contribution of each feature to the model's predictions. $\texttt{AccumCharge}$ is discared for visualization purposes as its contribution is much larger. 
 
 <p align="middle">
-  <img src="images/BDT_shap.png" width="85%"/>
+  <img src="images/BDT_shap.png" width="80%"/>
 </p>
 
 ## Fully Connected Deep Neural Network <a name="fcdnn"></a>
-In this case Bayesian optimization is performed on hyperparameters related both to the model's architecture and to the training process. In addition Optuna's Median Pruner is used to discard unpromising trials, speeding up the process.
+In this case Bayesian optimization is performed on hyperparameters related both to the model's architecture and to the training process. In addition Optuna's Median Pruner is used to discard unpromising trials, speeding up the process. As it can be seen, of 200 trials only 7 are kept. 
 
 <p align="middle">
-  <img src="images/FCDNN_hyperparameter_tuning.png" width="100%"/>
+  <img src="images/FCDNN_hyperparameter_tuning.png" width="90%"/>
 </p>
 
 ## 1-Dimesional Convolutional Neural Network <a name="1dcnn"></a>
@@ -56,7 +56,7 @@ To prevent overfitting and instability due to the complex architecture several r
 Bayesian optimization of the hyperparameters (with pruning) is performed. 
 
 <p align="middle">
-  <img src="images/1DCNN_hyperparameter_tuning.png" width="95%"/>
+  <img src="images/1DCNN_hyperparameter_tuning.png" width="85%"/>
 </p>
 
 ## Results <a name="results"></a>
